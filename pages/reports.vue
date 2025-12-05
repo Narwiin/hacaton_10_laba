@@ -3,7 +3,7 @@
 
     <!-- Title -->
     <h1 class="text-4xl font-bold mb-6 text-center neon">
-      📄 Water Quality Reports
+       Water Quality Reports
     </h1>
 
     <!-- Generate PDF button -->

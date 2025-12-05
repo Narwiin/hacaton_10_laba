@@ -1,0 +1,174 @@
+<template>
+  <div class="p-6 lg:p-10 min-h-screen text-white relative bg-gradient-to-br from-[#0a0420] via-[#120825] to-[#1a0b35]">
+
+    <!-- BACKGROUND DECOR -->
+    <div class="absolute inset-0 pointer-events-none opacity-10">
+      <div class="absolute top-0 right-0 w-96 h-96 bg-fuchsia-500/20 blur-3xl"></div>
+      <div class="absolute bottom-0 left-0 w-96 h-96 bg-indigo-500/20 blur-3xl"></div>
+    </div>
+
+    <div class="relative z-10 max-w-3xl mx-auto">
+
+      <!-- PAGE HEADER -->
+      <div class="mb-10">
+        <h1 class="text-3xl font-bold text-indigo-200">Add New Lake</h1>
+        <p class="text-indigo-300/70">Fill out the form to register a new waterbody in the system.</p>
+      </div>
+
+      <!-- FORM CARD -->
+      <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl p-8">
+
+        <form @submit.prevent="submitForm" class="space-y-6">
+
+          <!-- NAME -->
+          <div>
+            <label class="form-label">Lake Name</label>
+            <input 
+              v-model="form.name" 
+              type="text" 
+              required
+              placeholder="Example: Lake Shalkar"
+              class="form-input"
+            />
+          </div>
+
+          <!-- TYPE -->
+          <div>
+            <label class="form-label">Type</label>
+            <select 
+              v-model="form.type" 
+              required
+              class="form-input"
+            >
+              <option disabled value="">Select type</option>
+              <option>Lake</option>
+              <option>River</option>
+              <option>Pond</option>
+              <option>Reservoir</option>
+            </select>
+          </div>
+
+          <!-- COORDINATES -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div>
+              <label class="form-label">Latitude</label>
+              <input 
+                v-model="form.lat" 
+                type="number" 
+                step="0.000001"
+                required
+                placeholder="54.123456"
+                class="form-input"
+              />
+            </div>
+            <div>
+              <label class="form-label">Longitude</label>
+              <input 
+                v-model="form.lng" 
+                type="number" 
+                step="0.000001"
+                required
+                placeholder="69.123456"
+                class="form-input"
+              />
+            </div>
+          </div>
+
+          <!-- DESCRIPTION -->
+          <div>
+            <label class="form-label">Description</label>
+            <textarea
+              v-model="form.description"
+              rows="4"
+              placeholder="Short description of the lake..."
+              class="form-input resize-none"
+            ></textarea>
+          </div>
+
+          <!-- PHOTO URL -->
+          <div>
+            <label class="form-label">Photo URL</label>
+            <input 
+              v-model="form.image" 
+              type="url" 
+              placeholder="https://example.com/lake.jpg"
+              class="form-input"
+            />
+          </div>
+
+          <!-- ERROR -->
+          <p v-if="error" class="text-red-400 text-sm text-center">{{ error }}</p>
+
+
+          <!-- SUBMIT BUTTON -->
+          <button 
+            type="submit"
+            class="w-full py-3 rounded-xl bg-gradient-to-r from-fuchsia-600 to-indigo-600 
+                   font-semibold hover:opacity-90 transition shadow-lg shadow-fuchsia-500/40"
+          >
+            Add Lake
+          </button>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+</template>
+
+
+<script setup>
+import { ref } from 'vue'
+
+const form = ref({
+  name: '',
+  type: '',
+  lat: '',
+  lng: '',
+  description: '',
+  image: ''
+})
+
+const error = ref('')
+
+async function submitForm() {
+  error.value = ''
+
+  // SIMPLE VALIDATION
+  if (!form.value.name || !form.value.type || !form.value.lat || !form.value.lng) {
+    error.value = "Please fill in all required fields."
+    return
+  }
+
+  // SEND TO API
+  try {
+    await $fetch('/api/water', {
+      method: 'POST',
+      body: form.value
+    })
+
+    alert("Lake added successfully!")
+    navigateTo('/admin/dashboard')
+
+  } catch (err) {
+    error.value = "Error while adding lake."
+  }
+}
+</script>
+
+
+<style scoped>
+.form-label {
+  @apply block mb-1 text-indigo-300/80 text-sm;
+}
+
+.form-input {
+  @apply w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 
+         text-white placeholder-indigo-300/40 focus:outline-none 
+         focus:border-fuchsia-400/70 transition;
+}
+
+.form-input::placeholder {
+  color: rgba(199, 210, 254, 0.3);
+}
+</style>

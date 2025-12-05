@@ -3,7 +3,7 @@
 
     <!-- Заголовок -->
     <h1 class="text-4xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-      👥 Citizen Reports
+       Citizen Reports
     </h1>
 
     <!-- Форма добавления отчёта -->

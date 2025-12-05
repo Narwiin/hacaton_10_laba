@@ -1,11 +1,11 @@
 <template>
   <div class="min-h-screen p-10 bg-gradient-to-br from-[#0a0018] to-[#12003a] text-white">
 
-    <!-- Title -->
+    
     <h1 class="text-4xl font-bold mb-6 neon-text">⚠ Система Оповещений</h1>
     <p class="text-gray-300 mb-10">Мониторинг качества воды — реальное время</p>
 
-    <!-- Filters -->
+    
     <div class="flex flex-wrap gap-4 mb-8">
       <button
         v-for="f in filterList"
@@ -20,7 +20,7 @@
       </button>
     </div>
 
-    <!-- Alerts List -->
+   
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
       <div
         v-for="alert in filteredAlerts"
